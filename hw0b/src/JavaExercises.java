@@ -35,7 +35,19 @@ public class JavaExercises {
      *  Assumes array is nonempty. */
     public static int findMinMax(int[] array) {
         // TODO: Fill in this function.
-        return 0;
+        int max = array[0];
+        int min = array[0];
+        for (int k : array) {
+            if (k > max) {
+                max = k;
+            }
+        }
+        for (int j : array) {
+            if (j < min) {
+                min = j;
+            }
+        }
+        return max - min;
     }
 
     /**
@@ -52,7 +64,16 @@ public class JavaExercises {
 
     private static List<Integer> hailstoneHelper(int x, List<Integer> list) {
         // TODO: Fill in this function.
-        return null;
+        list.add(x);
+        if (x == 1){
+            return list;
+        }
+        else if (x % 2 == 0){
+            return hailstoneHelper(x / 2, list);
+        }
+        else {
+            return hailstoneHelper(x * 3 + 1, list);
+        }
     }
 
 }
