@@ -119,4 +119,31 @@ public class TestTask5 {
 
         assertWithMessage("Boards should match:").that(TestUtils.boardToString(board)).isEqualTo(TestUtils.boardToString(expected));
    }
+
+    /** My own test */
+    @Test
+    @Tag("task5")
+    @Order(5)
+    @DisplayName("Own")
+    @GradedTest(number = "5.5")
+    public void ownTest() {
+        int[][] board = new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 0, 2},
+                {0, 0, 0, 2},
+                {0, 0, 0, 2},
+        };
+
+        GameLogic.tiltColumn(board, 3);
+
+        int[][] expected = new int[][]{
+                {0, 0, 0, 4},
+                {0, 0, 0, 2},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+        };
+
+        assertWithMessage("Boards should match:").that(TestUtils.boardToString(board)).isEqualTo(TestUtils.boardToString(expected));
+    }
+
 }
