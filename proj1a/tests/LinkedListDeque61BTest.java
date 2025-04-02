@@ -35,6 +35,7 @@ public class LinkedListDeque61BTest {
          Deque61B<String> lld1 = new LinkedListDeque61B<>();
 
          lld1.addLast("front"); // after this call we expect: ["front"]
+         assertThat(lld1.toList()).containsExactly("front").inOrder();
          lld1.addLast("middle"); // after this call we expect: ["front", "middle"]
          lld1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
          assertThat(lld1.toList()).containsExactly("front", "middle", "back").inOrder();

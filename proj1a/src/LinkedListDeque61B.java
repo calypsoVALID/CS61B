@@ -28,17 +28,10 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         size += 1;
         Node newNode = new Node();
         newNode.value = x;
-        if (isEmpty()) {
-            newNode.next = sentinel;
-            newNode.prev = sentinel;
-            sentinel.next = newNode;
-            sentinel.prev = newNode;
-        } else {
-            newNode.next = sentinel.next;
-            newNode.prev = sentinel;
-            sentinel.next.prev = newNode;
-            sentinel.next = newNode;
-        }
+        sentinel.next.prev = newNode;
+        newNode.next = sentinel.next;
+        sentinel.next = newNode;
+        newNode.prev = sentinel;
     }
 
     /**
@@ -51,17 +44,10 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         size += 1;
         Node newNode = new Node();
         newNode.value = x;
-        if (isEmpty()) {
-            newNode.next = sentinel;
-            newNode.prev = sentinel;
-            sentinel.next = newNode;
-            sentinel.prev = newNode;
-        } else {
-            sentinel.prev.next = newNode;
-            newNode.prev = sentinel.prev;
-            newNode.next = sentinel;
-            sentinel.prev = newNode;
-        }
+        sentinel.prev.next = newNode;
+        newNode.prev = sentinel.prev;
+        sentinel.prev = newNode;
+        newNode.next = sentinel;
     }
 
     /**
@@ -109,11 +95,13 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     public T removeFirst() {
         if (isEmpty()) {
             return null;
+        } else {
+            size -= 1;
+            T returnValue = sentinel.next.value;
+            sentinel.next.next.prev = sentinel;
+            sentinel.next = sentinel.next.next;
+            return returnValue;
         }
-        T returnValue = sentinel.next.value;
-        sentinel.next.next.prev = sentinel;
-        sentinel.next = sentinel.next.next;
-        return returnValue;
     }
 
     /**
@@ -126,6 +114,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         if (isEmpty()) {
             return null;
         } else {
+            size -= 1;
             T returnValue = sentinel.prev.value;
             sentinel.prev.prev.next = sentinel;
             sentinel.prev = sentinel.prev.prev;
@@ -143,22 +132,33 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      * @return element at {@code index} in the deque
      */
     @Override
-    public T get(int index) {
+    public T get(int index) {//O(n)
         if (size == 0 || index < 0 || index >= size) {
             return null;
-        } else if (index <= (size / 2)) {
+        } else {
             Node currentNode = sentinel.next;
             for (int i = 0; i < index; i++) {
                 currentNode = currentNode.next;
             }
             return currentNode.value;
-        } else {
-            Node currentNode = sentinel.prev;
-            for (int i = 0; i < size - index - 1; i++) {
-                currentNode = currentNode.prev;
-            }
-            return currentNode.value;
         }
+
+        //        尝试优化为O(n/2)
+        //        if (size == 0 || index < 0 || index >= size) {
+        //            return null;
+        //        } else if (index <= (size / 2)) {
+        //            Node currentNode = sentinel.next;
+        //            for (int i = 0; i < index; i++) {
+        //                currentNode = currentNode.next;
+        //            }
+        //            return currentNode.value;
+        //        } else {
+        //            Node currentNode = sentinel.prev;
+        //            for (int i = 0; i < size - index - 1; i++) {
+        //                currentNode = currentNode.prev;
+        //            }
+        //            return currentNode.value;
+        //        }
     }
 
     /**
@@ -186,5 +186,4 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
             return helperGetRecursive(node, temp - 1);
         }
     }
-
 }
