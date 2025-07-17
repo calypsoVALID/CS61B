@@ -94,7 +94,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
         if (index < 0 || index >= size) {
             return null;
         } else {
-            return items[Math.floorMod(nextFirst + index, items.length)];
+            return items[Math.floorMod(nextFirst + index + 1, items.length)];
         }
     }
 
