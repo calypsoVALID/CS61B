@@ -1,7 +1,10 @@
 import deque.ArrayDeque61B;
+import deque.LinkedListDeque61B;
+import deque.Deque61B;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.Iterator;
 import deque.ArrayDeque61B;
 import jh61b.utils.Reflection;
 import org.junit.jupiter.api.DisplayName;
@@ -126,6 +129,111 @@ public class ArrayDeque61BTest {
         assertNull(deque.removeFirst());
         assertNull(deque.removeLast());
     }
+
+    @Test
+    public void testIteratorBasic() {
+        ArrayDeque61B<Integer> deque = new ArrayDeque61B<>();
+        deque.addLast(10);
+        deque.addLast(20);
+        deque.addLast(30);
+
+        Iterator<Integer> iter = deque.iterator();
+        assertTrue(iter.hasNext());
+        assertEquals((Integer) 10, iter.next());
+        assertTrue(iter.hasNext());
+        assertEquals((Integer) 20, iter.next());
+        assertTrue(iter.hasNext());
+        assertEquals((Integer) 30, iter.next());
+        assertFalse(iter.hasNext());
+    }
+
+    @Test
+    public void testIteratorWithForEach() {
+        ArrayDeque61B<String> deque = new ArrayDeque61B<>();
+        deque.addLast("a");
+        deque.addLast("b");
+        deque.addLast("c");
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : deque) {
+            sb.append(s);
+        }
+
+        assertEquals("abc", sb.toString());
+    }
+
+    @Test
+    public void testIteratorEmptyDeque() {
+        ArrayDeque61B<Double> deque = new ArrayDeque61B<>();
+        Iterator<Double> iter = deque.iterator();
+        assertFalse(iter.hasNext());
+    }
+
+
+    @Test
+    public void testEqualsDifferentSize() {
+        ArrayDeque61B<Integer> d1 = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> d2 = new ArrayDeque61B<>();
+
+        d1.addLast(1);
+        d1.addLast(2);
+
+        d2.addLast(1);
+        d2.addLast(2);
+        d2.addLast(3);
+
+        assertNotEquals(d1, d2);
+    }
+
+    @Test
+    public void testEqualsNull() {
+        ArrayDeque61B<Integer> d1 = new ArrayDeque61B<>();
+        d1.addLast(1);
+
+        assertNotEquals(d1, null);
+    }
+
+    @Test
+    public void testEqualsDifferentType() {
+        ArrayDeque61B<Integer> d1 = new ArrayDeque61B<>();
+        d1.addLast(1);
+
+        String notADeque = "not a deque";
+
+        assertNotEquals(d1, notADeque);
+    }
+
+    @Test
+    public void testLinkedListDequeToString() {
+        Deque61B<String> deque = new LinkedListDeque61B<>();
+        deque.addLast("front");
+        deque.addLast("middle");
+        deque.addLast("back");
+
+        String expected = "[front, middle, back]";
+        assertEquals(expected, deque.toString());
+    }
+
+    @Test
+    public void testArrayDequeToString() {
+        Deque61B<String> deque = new ArrayDeque61B<>();
+        deque.addLast("front");
+        deque.addLast("middle");
+        deque.addLast("back");
+
+        String expected = "[front, middle, back]";
+        assertEquals(expected, deque.toString());
+    }
+
+    @Test
+    public void testEmptyDequeToString() {
+        Deque61B<Integer> deque1 = new LinkedListDeque61B<>();
+        Deque61B<Integer> deque2 = new ArrayDeque61B<>();
+
+        assertEquals("[]", deque1.toString());
+        assertEquals("[]", deque2.toString());
+    }
+
 
 //    @Test
 //    public void addFirstTestBasic() {

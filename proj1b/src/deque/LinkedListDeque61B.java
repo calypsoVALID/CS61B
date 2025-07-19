@@ -16,8 +16,29 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     }
 
     @Override
+    public String toString(){
+        return toList().toString();
+    }
+
+    @Override
     public Iterator<T> iterator() {
-        return null;
+        return new LinkedListIterator();
+    }
+
+    private class LinkedListIterator implements Iterator<T> {
+        private Node current = sentinel.next;
+
+        @Override
+        public boolean hasNext() {
+            return current == sentinel;
+        }
+
+        @Override
+        public T next() {
+            T ret = current.value;
+            current = current.next;
+            return ret;
+        }
     }
 
     public class Node {

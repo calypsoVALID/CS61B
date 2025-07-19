@@ -15,6 +15,10 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     private final int ResizeUpFactor = 2;
     private final int ResizeDownFactor = 4;
 
+    @Override
+    public String toString() {
+        return toList().toString();
+    }
 
     private void resize(int capacity) {
         T[] newItems = (T[]) new Object[capacity];
@@ -125,6 +129,53 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        // 返回一个实现了Iterator的对象
+        return new ArrayDequeIterator();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // 如果是同一个对象，直接返回True
+        if (this == other) {
+            return true;
+        }
+
+        // 如果o不是deque61B类型，或者是null，返回false
+        if (!(other instanceof Deque61B<?> otherDeque)) {
+            return false;
+        }
+
+        // 如果大小不一样，肯定不相等
+        if (this.size() != otherDeque.size()) {
+            return false;
+        }
+
+        // 逐个比较每个元素是否相同
+        for (int i = 0; i < this.size; i++) {
+            T item1 = items[i];
+            Object item2 = otherDeque.get(i);
+            if (!item1.equals(item2)) {
+                return false;
+            }
+        }
+
+        // 所有元素都相同
+        return true;
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int pos = 0;
+
+        @Override
+        public boolean hasNext() {
+            return pos < size;
+        }
+
+        @Override
+        public T next() {
+            T item = get(pos);
+            pos++;
+            return item;
+        }
     }
 }
