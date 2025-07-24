@@ -136,9 +136,20 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<>();
+        collectKeys(root, set);
+        return set;
     }
 
+    private void collectKeys(Node node, Set<K> set) {
+        if (node == null) {
+            return;
+        }
+
+        collectKeys(node.left, set);
+        set.add(node.key);
+        collectKeys(node.right, set);
+    }
     /**
      * Removes the mapping for the specified key from this map if present,
      * or null if there is no such mapping.
@@ -149,7 +160,47 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        root = remove(root, key);
+        return null;
+    }
+
+    private Node remove(Node node, K key) {
+        if (node == null) {
+            return null;// 如果节点为空，返回null
+        }
+
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            node.left = remove(node.left, key); // 如果key小于当前节点的key,则去左子树删除
+        } else if (cmp > 0) {
+            node.right = remove(node.right, key); // 如果 key 大于当前节点的 key，则去右子树删除
+        } else {
+            // 找到要删除的节点了
+
+            // 情况1：当前节点没有左子树，直接返回右子树
+            if (node.left == null) {
+                return node.right;
+            }
+
+            // 情况2：当前节点没有右子树，直接返回左子树
+            if (node.right == null) {
+                return node.left;
+            }
+
+            // 情况3：当前节点有两个子树
+            // 找到右子树中最小的节点（后继节点），用它来替换当前节点
+            node.key = min(node.right).key;
+            node.value = min(node.right).value;
+            node.right = remove(node.right, node.key);
+        }
+        return node;
+    }
+
+    private Node min(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
     }
 
     /**
@@ -159,7 +210,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet().iterator();
     }
 
     public void printInOrder() {
