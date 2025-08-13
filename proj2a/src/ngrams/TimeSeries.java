@@ -1,6 +1,7 @@
 package ngrams;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -31,6 +32,18 @@ public class TimeSeries extends TreeMap<Integer, Double> {
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
         super();
         // TODO: Fill in this constructor.
+        if (startYear > endYear) {
+            throw new IllegalArgumentException("Start year cannot be greater than end year");
+        }
+
+        // 遍历给定区间内的年份
+        for (int year = startYear; year <= endYear; year++) {
+            if (ts.containsKey(year)) {
+                this.put(year, ts.get(year));
+            } else {
+                this.put(year, 0.0);
+            }
+        }
     }
 
     /**
